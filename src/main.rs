@@ -4,7 +4,7 @@ use std::fs;
 use std::io::Write;
 
 enum Input {
-    Text,
+    Continue,
     Exit,
 }
 
@@ -32,13 +32,13 @@ fn console_reader() -> Input {
         return Input::Exit;
     }
     text_print_and_save(console_input);
-    Input::Text
+    Input::Continue
 }
 
 fn main() {
     loop {
         match console_reader() {
-            Input::Text => (),
+            Input::Continue => (),
             Input::Exit => break,
         }
     }
