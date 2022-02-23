@@ -5,36 +5,29 @@ use std::io::Write;
 
 fn console_reader() -> String {
     println!("Input your notes here, or input \"exit()\" to leave:");
-
-    let console_input = read_password();
-
-    match console_input {
-        Ok(val) => {
-            if text_process(val) == "exit()" {
-                return String::from("exit()");
-            }
-        }
-        Err(val) => println!("{}\n", val),
+    let console_input = read_password().expect("Failed to read input!");
+    if console_input == "exit()" {
+        return console_input;
     }
-    String::from("continue")
+    text_print_and_save(console_input);
+    String::new()
 }
 
-fn text_process(mut text: String) -> String {
-    if text == "exit()" {
-        return text;
-    }
-    let mut file = fs::OpenOptions::new()
-        .read(true)
-        .append(true)
-        .create(true)
-        .open("./note.txt")
-        .expect("Failed to open file!");
+fn text_print_and_save(mut text: String) {
+    let mut file = load_file();
     text = encode(text);
     text.push('\n');
     println!("{}", text);
     file.write_all(text.as_bytes()).expect("Failed to write!");
+}
 
-    String::new()
+fn load_file() -> std::fs::File {
+    fs::OpenOptions::new()
+        .read(true)
+        .append(true)
+        .create(true)
+        .open("./note.txt")
+        .expect("Failed to load file!")
 }
 
 fn main() {
