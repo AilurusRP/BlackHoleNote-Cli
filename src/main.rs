@@ -25,21 +25,26 @@ fn text_print_and_save(mut text: String) {
     file.write_all(text.as_bytes()).expect("Failed to write!");
 }
 
+fn handle_input(console_input: String) -> Input {
+    match &console_input[..] {
+        "exit()" => Input::Exit,
+        _ => {
+            text_print_and_save(console_input);
+            Input::Other
+        }
+    }
+}
+
 fn console_reader() -> Input {
     println!("Input your notes here, or input \"exit()\" to leave:");
     let console_input = read_password().expect("Failed to read input!");
-    if console_input == "exit()" {
-        return Input::Exit;
-    }
-    text_print_and_save(console_input);
-    Input::Other
+    handle_input(console_input)
 }
 
 fn main() {
     loop {
-        match console_reader() {
-            Input::Other => (),
-            Input::Exit => break,
+        if let Input::Exit = console_reader() {
+            break;
         }
     }
 }
