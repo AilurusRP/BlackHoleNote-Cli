@@ -4,8 +4,8 @@ use std::fs;
 use std::io::Write;
 
 enum Input {
-    Continue,
     Exit,
+    Other,
 }
 
 fn load_file() -> fs::File {
@@ -32,13 +32,13 @@ fn console_reader() -> Input {
         return Input::Exit;
     }
     text_print_and_save(console_input);
-    Input::Continue
+    Input::Other
 }
 
 fn main() {
     loop {
         match console_reader() {
-            Input::Continue => (),
+            Input::Other => (),
             Input::Exit => break,
         }
     }
