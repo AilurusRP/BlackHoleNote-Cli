@@ -8,14 +8,13 @@ enum Input {
     Exit,
 }
 
-fn console_reader() -> Input {
-    println!("Input your notes here, or input \"exit()\" to leave:");
-    let console_input = read_password().expect("Failed to read input!");
-    if console_input == "exit()" {
-        return Input::Exit;
-    }
-    text_print_and_save(console_input);
-    Input::Text
+fn load_file() -> fs::File {
+    fs::OpenOptions::new()
+        .read(true)
+        .append(true)
+        .create(true)
+        .open("./note.txt")
+        .expect("Failed to load file!")
 }
 
 fn text_print_and_save(mut text: String) {
@@ -26,13 +25,14 @@ fn text_print_and_save(mut text: String) {
     file.write_all(text.as_bytes()).expect("Failed to write!");
 }
 
-fn load_file() -> fs::File {
-    fs::OpenOptions::new()
-        .read(true)
-        .append(true)
-        .create(true)
-        .open("./note.txt")
-        .expect("Failed to load file!")
+fn console_reader() -> Input {
+    println!("Input your notes here, or input \"exit()\" to leave:");
+    let console_input = read_password().expect("Failed to read input!");
+    if console_input == "exit()" {
+        return Input::Exit;
+    }
+    text_print_and_save(console_input);
+    Input::Text
 }
 
 fn main() {
