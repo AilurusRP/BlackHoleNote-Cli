@@ -3,14 +3,19 @@ use rpassword::read_password;
 use std::fs;
 use std::io::Write;
 
-fn console_reader() -> String {
+enum Input {
+    Text,
+    Exit,
+}
+
+fn console_reader() -> Input {
     println!("Input your notes here, or input \"exit()\" to leave:");
     let console_input = read_password().expect("Failed to read input!");
     if console_input == "exit()" {
-        return console_input;
+        return Input::Exit;
     }
     text_print_and_save(console_input);
-    String::new()
+    Input::Text
 }
 
 fn text_print_and_save(mut text: String) {
@@ -32,8 +37,9 @@ fn load_file() -> fs::File {
 
 fn main() {
     loop {
-        if console_reader() == "exit()" {
-            break;
-        };
+        match console_reader() {
+            Input::Text => (),
+            Input::Exit => break,
+        }
     }
 }
