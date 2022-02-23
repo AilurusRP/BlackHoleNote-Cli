@@ -23,7 +23,6 @@ fn text_process(mut text: String) -> String {
     if text == "exit()" {
         return text;
     }
-    println!("{}\n", text);
     let mut file = fs::OpenOptions::new()
         .read(true)
         .append(true)
@@ -32,6 +31,7 @@ fn text_process(mut text: String) -> String {
         .expect("Failed to open file!");
     text = encode(text);
     text.push('\n');
+    println!("{}", text);
     file.write_all(text.as_bytes()).expect("Failed to write!");
 
     String::new()
