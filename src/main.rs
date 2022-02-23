@@ -21,7 +21,7 @@ fn text_print_and_save(mut text: String) {
     file.write_all(text.as_bytes()).expect("Failed to write!");
 }
 
-fn load_file() -> std::fs::File {
+fn load_file() -> fs::File {
     fs::OpenOptions::new()
         .read(true)
         .append(true)
